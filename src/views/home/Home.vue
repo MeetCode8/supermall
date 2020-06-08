@@ -74,7 +74,7 @@ export default {
       }
     },
     backClick() {
-      this.$refs.scroll.scrollTo(0, 0, 300);
+      this.$refs.scroll.scroll.scrollTo(0, 0, 300);
     },
     // 网络请求的相关方法
     // 1、请求多个数据
@@ -103,7 +103,6 @@ export default {
 #home {
   padding-top: 39px;
   position: relative;
-  height: 100vh;
 }
 .home-nav {
   background-color: var(--color-tint);
@@ -123,12 +122,14 @@ export default {
 }
 .content {
   /* height: 300px; */
-  overflow: hidden;
+  /* overflow: hidden;
   position: absolute;
   top: 44px;
   bottom: 49px;
   left: 0;
   right: 0;
-  position: sticky;
+  position: sticky; */
+  height: calc(100% - 93px);
+  overflow: hidden;
 }
 </style>
