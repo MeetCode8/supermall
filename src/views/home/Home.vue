@@ -3,7 +3,13 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" ref="scroll">
+    <scroll
+      class="scroll"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pulling-up-load="true"
+    >
       <home-swiper :banners="banners"></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -11,7 +17,7 @@
       <goods-list :goods="goods[currentType].list"></goods-list>
     </scroll>
 
-    <back-top @click.native="backClick"></back-top>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -37,7 +43,8 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentType: "pop"
+      currentType: "pop",
+      isShowBackTop: false
     };
   },
   components: {
@@ -74,7 +81,11 @@ export default {
       }
     },
     backClick() {
-      this.$refs.scroll.scroll.scrollTo(0, 0, 300);
+      this.$refs.scroll.scrollTo(0, 0);
+    },
+    contentScroll(position) {
+      this.isShowBackTop = -position.y > 1000;
+      // console.log(position);
     },
     // 网络请求的相关方法
     // 1、请求多个数据
@@ -122,14 +133,14 @@ export default {
 }
 .content {
   /* height: 300px; */
-  /* overflow: hidden;
+  overflow: hidden;
   position: absolute;
   top: 44px;
-  bottom: 49px;
+  bottom: 44px;
   left: 0;
   right: 0;
-  position: sticky; */
-  height: calc(100% - 93px);
-  overflow: hidden;
+  /* position: sticky; */
+  /* height: calc(100% - 93px);
+  overflow: hidden; */
 }
 </style>

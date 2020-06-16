@@ -10,27 +10,57 @@
 import BScroll from "better-scroll";
 export default {
   name: "Scroll",
+  props: {
+    probeType: {
+      type: Number,
+      default: 0
+    },
+    pullingUpLoad: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       scroll: null
     };
   },
   mounted() {
+    // 1、创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper, {
-      click: true
+      click: true,
+      probeType: this.probeType,
+      pullingUpLoad: this.pullingUpLoad
     });
 
-    // this.scroll.on("scroll", position => {
-    //   //   console.log(position);
-    // });
+    // 1、监听滚动对象
+    this.scroll.on("scroll", position => {
+      // console.log(position);
+      this.$emit("scroll", position);
+    });
 
-    // this.scroll.on("pullingUp", () => {
-    //   console.log("上拉加载更多");
-    // });
-    this.scroll.scrollTo(0, 0);
+    // 2、下拉加载更多
+    this.scroll.on("pullingUp", () => {
+      console.log("上拉加载更多");
+    });
+  },
+
+  methods: {
+    // scrollTo(x, y, time = 300) {
+    //   this.scroll.scrollTo(x, y, time);
+    // }
+    scrollTo(x, y, time = 100) {
+      this.scroll.scrollTo(x, y, time);
+    }
   }
 };
 </script>
 
 <style scope>
+.wrapper {
+  height: 500px;
+}
+.content {
+  height: 4500px;
+}
 </style>
