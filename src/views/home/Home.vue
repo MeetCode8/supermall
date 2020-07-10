@@ -34,6 +34,7 @@ import BackTop from "components/content/BackTop/BackTop.vue";
 
 export default {
   name: "Home",
+  //在data中保存的数据是不会被销毁的，定义值时，注意使用的是 ：不是 =
   data() {
     return {
       banners: [],
@@ -44,7 +45,8 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShowBackTop: false
+      isShowBackTop: false,
+      saveY: 0
     };
   },
   components: {
@@ -64,6 +66,18 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
+  },
+  //router回来时调用的函数，设置当前的Y高度
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+    this.$refs.scroll.refresh();
+  },
+  //router离开时调用的函数，离开时获取Y的高度
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY();
+  },
+  destroyed() {
+    console.log("destoryed");
   },
   methods: {
     //时间监听的相关方法
